@@ -14,18 +14,18 @@ function App() {
   const weatherMain = useAppSelector((state) => state.main);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   setLoading(true)
-  //   const newYork = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=40.71&lon=-74.01&appid=${API_KEY}`)
-  //   const batumi = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=41.65&lon=41.64&appid=${API_KEY}`)
-  //   Promise.all([newYork, batumi])
-  //   .then(res => Promise.all(res.map(r => r.json())))
-  //   .then(data => {
-  //     data.map(d => dispatch(getWeatherAC({weatherRes: d, id: d.name})))
-  //   })
-  //   .catch(() => alert(infoText.alertInfo))
-  //   .finally(() => setLoading(false))
-  // }, []);
+  useEffect(() => {
+    setLoading(true)
+    const newYork = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=40.71&lon=-74.01&appid=${API_KEY}`)
+    const batumi = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=41.65&lon=41.64&appid=${API_KEY}`)
+    Promise.all([newYork, batumi])
+    .then(res => Promise.all(res.map(r => r.json())))
+    .then(data => {
+      data.map(d => dispatch(getWeatherAC({weatherRes: d, id: d.name})))
+    })
+    .catch(() => alert(infoText.alertInfo))
+    .finally(() => setLoading(false))
+  }, []);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const cityValue = e.currentTarget.value.toLowerCase()
