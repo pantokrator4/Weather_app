@@ -3,8 +3,10 @@ import "./App.css";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { deleteFromFavAC, getWeatherAC } from "./model/weather-reduser";
 import { coords } from "./coordsData/coordsData";
-import { loadingImage, infoImage } from "./assets";
 import { infoText } from "./infoText/infoText";
+import loadingImage from './assets/loading2.png'
+import infoImage from './assets/info.png'
+import weatherImage from '../public/Circle-icons-weather.svg.png'
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -21,37 +23,38 @@ function App() {
     Promise.all([newYork, batumi])
     .then(res => Promise.all(res.map(r => r.json())))
     .then(data => {
-      data.map(d => dispatch(getWeatherAC({weatherRes: d, id: d.name})))
+      data.map(d => dispatch(getWeatherAC({weatherRes: d, id: d.name.replace(/\s/g, '').trim()})))
     })
     .catch(() => alert(infoText.alertInfo))
     .finally(() => setLoading(false))
   }, []);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const cityValue = e.currentTarget.value.toLowerCase()
+    const cityValue = e.currentTarget.value
     setCity(cityValue)
     }
     
 
     const onClickHandler = () => {
-      if (Object.keys(coords).includes(city)) {
-        const isCityExit = Boolean(weatherMain.find(e => e.id === city))
+      const trimmedCity = city.replace(/\s/g, '').trim().toLowerCase()
+      if (Object.keys(coords).includes(trimmedCity)) {
+        const isCityExit = Boolean(weatherMain.find(e => e.id === trimmedCity))
         if (!isCityExit) {
           setLoading(true)
-          fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${coords[city].lat}&lon=${coords[city].lon}&appid=${API_KEY}`)
+          fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${coords[trimmedCity].lat}&lon=${coords[trimmedCity].lon}&appid=${API_KEY}`)
           .then((res) => res.json())
-          .then((data) => dispatch(getWeatherAC({ weatherRes: data, id: city })))
+          .then((data) => dispatch(getWeatherAC({ weatherRes: data, id: trimmedCity })))
           .catch(() => alert(infoText.alertInfo))
           .finally(() => { 
             setLoading(false) 
             setCity('')
           })
         } else {
-          alert(`You already added ${city.toUpperCase()} in fav list :)`)
+          alert(`You already added ${trimmedCity.toUpperCase()} in fav list :)`)
           setCity('')
         }
       } else {
-          alert(`Unfortunetly, ${city.toUpperCase()} not added yet, come back later!`)
+          alert(`Unfortunetly, ${trimmedCity.toUpperCase()} not added yet, come back later!`)
           setCity('')
       }
     }
@@ -66,10 +69,15 @@ function App() {
       dispatch(deleteFromFavAC({id: cardID}))
     }
 
+    const onInfoClickHandler = () => {
+      alert(infoText.demoInfo)
+    }
+
   return (
     <>
-    <img className="infoImage" src={ infoImage } title={infoText.demoInfo}/>
-    <h3>Find city</h3>
+      <img className="infoImage" src={ infoImage } title={infoText.demoInfo} onClick={onInfoClickHandler}/>
+      <img className="weatherImage" src={weatherImage}/>
+      <h3>Find city</h3>
       <input type="text" className="searchInput" value={city} onChange={onChangeHandler}  onKeyDown={onKeyDownHandler}/>
       <button onClick={onClickHandler}>+</button>
       <h3>Favorite cities</h3>

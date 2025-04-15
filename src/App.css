@@ -9,6 +9,12 @@ h3 {
   margin: 0 0 5px 0;
 }
 
+.weatherImage {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
 .infoImage {
   position: absolute;
   top: 10px;

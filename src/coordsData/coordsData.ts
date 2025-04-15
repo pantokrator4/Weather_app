@@ -2,8 +2,8 @@ export const coords: Record<string, cordsValuesType> = {
   batumi: {lat: "41.65", lon: "41.64"},
   moscow: {lat: "55.75", lon: "37.62"},
   minsk: {lat: "53.90", lon: "27.57"},
-  'stary oskol': {lat: "51.29", lon: "37.84"},
-  'new york': {lat: "40.71", lon: "-74.01"},
+  'staryoskol': {lat: "51.29", lon: "37.84"},
+  'newyork': {lat: "40.71", lon: "-74.01"},
 }
 
 type cordsValuesType = {
