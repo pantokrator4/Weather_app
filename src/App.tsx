@@ -78,8 +78,10 @@ function App() {
       <img className="infoImage" src={ infoImage } title={infoText.demoInfo} onClick={onInfoClickHandler}/>
       <img className="weatherImage" src={weatherImage}/>
       <h3>Find city</h3>
+      <div className="inputAndButtonWrapper">
       <input type="text" className="searchInput" value={city} onChange={onChangeHandler}  onKeyDown={onKeyDownHandler}/>
       <button onClick={onClickHandler}>+</button>
+      </div>
       <h3>Favorite cities</h3>
       <div className="favCardsWrapper">
         { loading 
